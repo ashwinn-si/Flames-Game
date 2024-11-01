@@ -21,4 +21,4 @@ The FLAMES game is a popular compatibility test where users input two names, and
 - **Template Engine**: EJS (Embedded JavaScript)
 
 
-###[WEBSITE LINK]([https://flames-game-one.vercel.app/])
+[WEBSITE LINK](https://flames-game-one.vercel.app/)
