@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLAMES</title>
+    <!--MAIN STYLESHEET-->
+    <link rel="stylesheet" href="/main-style.css">
+    <!--MAIN FONT-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
+    <!--CURSIVE FONT-->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/assets/web-icon.jpg">
+</head>
+<body>
+    <div class="container">
+        <div class="card" >
+            <p class="main-header">FLAMES</p>
+            <p class="sub-header">Find out if this is your partner or not</p>
+            <div class="main-container">
+                <div class="input-container">
+                    <p class="input-container-text">Boy's Name</p>
+                    <input class="input-container-input" type="text" id="boy-name" placeholder="Enter boy's name">
+                </div>
+                <div class="input-container">
+                    <p class="input-container-text">Girl's Name</p>
+                    <input class="input-container-input" type="text" id="girl-name" name placeholder="Enter girl's name">
+                </div>
+                <button class="submit-button" id="submit-button" >Find the Truth</button>
+                <p class="credit">Ashwin S I</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("submit-button").addEventListener('click',()=>{
+            let originalBoyName=document.getElementById("boy-name").value.trim().toLowerCase()
+            originalBoyName=originalBoyName.split("");
+
+            let originalGirlName=document.getElementById("girl-name").value.trim().toLowerCase()
+            originalGirlName=originalGirlName.split("");
+            const boyName=originalBoyName.filter(letters => {
+                let smallLetters=letters.toLowerCase();
+
+                return smallLetters!==" " && smallLetters>='a' && smallLetters<='z'
+            });
+
+            const girlName=originalGirlName.filter(letters => {
+                let smallLetters=letters.toLowerCase();
+
+                return smallLetters!==" " && smallLetters>='a' && smallLetters<='z'
+            });
+
+            if(error_checker(boyName,"boy-name") && error_checker(girlName,"girl-name")){
+
+                result=relationshipCalculator(boyName,girlName)
+                fetch("/savingDetails" ,{
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json',
+                    },
+                    body:JSON.stringify({
+                        boyName : boyName,
+                        girlName : girlName,
+                        relationship : result[2],
+                        boyRemoveIndex : result[0],
+                        girlRemoveIndex : result[1]
+                    })
+                }).then(response=>{
+                    window.location.href="/result" ;   
+                }).catch((err)=>{
+                    console.log("unable to find the page");
+                })
+            }
+            
+            
+        })
+
+        function error_checker(value , id){
+            if(value.length == 0){
+                const container1 = document.getElementById(`${id}`);
+                container1.classList.add('vibrate');
+                setTimeout(() => {
+                    container1.classList.remove('vibrate');
+                }, 400);
+                return false;
+            }
+            return true;
+            
+        }
+
+        function relationshipCalculator(boyName , girlName){
+            let removingIndexBoy=[]
+            let removingIndexGirl=[]
+            for(let boyPointer=0;boyPointer<boyName.length;boyPointer++){
+                for(let girlPointer=0;girlPointer<girlName.length;girlPointer++){
+                    if(boyName[boyPointer]===girlName[girlPointer] && !removingIndexGirl.includes(girlPointer)){
+                        removingIndexBoy.push(boyPointer)
+                        removingIndexGirl.push(girlPointer)
+                        break
+                    }
+                }
+            }
+
+            const countNumber = boyName.length+girlName.length-removingIndexBoy.length-removingIndexGirl.length;
+
+            return [removingIndexBoy,removingIndexGirl,relationshipFinder(countNumber)]
+
+        }
+
+        function relationshipFinder(count){
+            let flames =['Friend','Lover','Affectionate','Marriage','Enemy','Sister']
+            let currIndex = 0
+            while (flames.length > 1) {
+                if(count==0) return 'Sister';
+                // main-logic
+                currIndex = (currIndex + count - 1) % flames.length
+            
+                flames.splice(currIndex, 1)
+
+            }
+            return flames[0]
+        }
+    </script>
+</body>
+</html>

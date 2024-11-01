@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLAMES</title>
+    <!--MAIN STYLESHEET-->
+    <link rel="stylesheet" href="/result-style.css">
+    <!--MAIN FONT-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
+    <!--CURSIVE FONT-->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <p class="main-header">Boy's Name</p>
+            <p id="boy-name" class="main-header">
+                <%for(let i =0 ;i < boyName.length ; i++){
+                    if(!boyRemoveIndex.includes(i)){
+                        %>
+                        <span><%=boyName[i]%></span>
+                    <%}else{%>
+                        <span class="hippen"><%=boyName[i]%></span>
+                    <%}%>
+                <%}%>
+            </p>
+            <p class="main-header">Girl's Name</p>
+            <p id="girl-name" class="main-header">
+                <%for(let i =0 ;i < girlName.length ; i++){
+                    if(!girlRemoveIndex.includes(i)){
+                        %>
+                        <span><%=girlName[i]%></span>
+                    <%}else{%>
+                        <span class="hippen"><%=girlName[i]%></span>
+                    <%}%>
+                <%}%>
+            </p>
+            <p class="main-header" style="font-weight: bold;font-size: 1.5rem;"><%=relationship%></p>
+        </div>
+    </div>
+    <script>
+        const relationship = "<%=relationship%>";
+        console.log(relationship);
+        const root = document.documentElement;
+        if(relationship==="love"||relationship==="Affectionate"){
+            document.querySelector(".card").innerHTML += `<img src="/assets/happy.jpg" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`; 
+        }else if(relationship==="Friend" || relationship ==="Affectionate"){
+            root.style.setProperty('--soft-pink', '#87CEEB');       
+            root.style.setProperty('--rose-red', '#FFD700');          
+            root.style.setProperty('--mauve', '#98FB98');            
+            root.style.setProperty('--crimson', '#FF6F61');           
+            root.style.setProperty('--warm-peach', '#D8BFD8');       
+            root.style.setProperty('--champagne', '#FFE5B4');        
+            root.style.setProperty('--card-bg', '#F7FAFC');        
+            root.style.setProperty('--red', '#333333');               
+            root.style.setProperty('--border-color', '#D3D3D3');     
+            root.style.setProperty('--gray-text', '#FFB347');        
+            root.style.setProperty('--dark-bg', '#2c2c2c');
+            document.querySelector(".card").innerHTML += `<img src="/assets/half-happy.gif" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`;         
+        }else if(relationship==='Enemy'){
+            root.style.setProperty('--soft-pink', '#8B0000');          // Dark red for background
+            root.style.setProperty('--rose-red', '#FF4500');      
+            root.style.setProperty('--mauve', '#DC143C');     
+            root.style.setProperty('--crimson', '#B22222');   
+            root.style.setProperty('--warm-peach', '#FF6347');     
+            root.style.setProperty('--champagne', '#FFA07A');      
+            root.style.setProperty('--card-bg', '#FFDAB9');         
+            root.style.setProperty('--red', '#8B0000');              
+            root.style.setProperty('--border-color', '#CD5C5C');      
+            root.style.setProperty('--gray-text', '#2F4F4F');         
+            root.style.setProperty('--dark-bg', '#2c2c2c');   
+            document.querySelector(".card").innerHTML += `<img src="/assets/danger.gif" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`;         
+        }else{
+            root.style.setProperty('--soft-pink', '#4B4E6D');   
+            root.style.setProperty('--rose-red', '#4E2A2A');   
+            root.style.setProperty('--mauve', '#73648A');      
+            root.style.setProperty('--crimson', '#6E2E3A');     
+            root.style.setProperty('--warm-peach', '#C4A9A9'); 
+            root.style.setProperty('--champagne', '#B2A1A1');  
+            root.style.setProperty('--card-bg', '#F0ECEC');     
+            root.style.setProperty('--red', '#6A3E47');         
+            root.style.setProperty('--border-color', '#4D4D4D'); 
+            root.style.setProperty('--gray-text', '#5A5A5A');   
+            root.style.setProperty('--dark-bg', '#1E1E1E');     
+            document.querySelector(".card").innerHTML += `<img src="/assets/sad-image.jpg" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`;
+        }
+        document.querySelector(".card").innerHTML+='<p class="credit">Ashwin S I</p>';
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+:root {
+    --soft-pink: #ffe4e9;
+    --rose-red: #FF007F;
+    --mauve: #E0B0FF;
+    --crimson: #D6006E;
+    --warm-peach: #FFDAB9;
+    --champagne: #F7E7CE;
+    --card-bg: #fff5f8;
+    --red:red;
+    --border-color:rgb(255, 0, 212);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-transform: capitalize;
+    font-family: "Playwrite GB S";
+}
+
+body {
+    background-color: var(--soft-pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    min-width: 350px;
+    max-width: 350px;
+    width: 100%;
+    text-align: center;
+    border: solid var(--border-color);
+}
+
+.main-header {
+    font-size: 1.2rem;
+    color: var(--crimson);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.sub-header {
+    font-family: "Dancing Script", cursive;
+    font-size: 1.5rem;
+    color: var(--rose-red);
+    margin-bottom: 20px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hippen{
+    position: relative;
+}
+
+.hippen::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 120%;            /* Make the line longer */
+    height: 8px;             /* Increase thickness */
+    background-color: var(--red);
+    transform: rotate(-40deg); /* Slant the line */
+    opacity: 0.8;
+}
+
+.credit{
+    color: var(--crimson);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/*vibrate text*/
+@keyframes smoothVibrate {
+    0% {
+        transform: translate(0);
+    }
+
+    10% {
+        transform: translate(-5px, 5px);
+    }
+
+    20% {
+        transform: translate(5px, -5px);
+    }
+
+    30% {
+        transform: translate(-10px, 10px);
+    }
+
+    40% {
+        transform: translate(10px, -10px);
+    }
+
+    50% {
+        transform: translate(-15px, 15px);
+    }
+
+    60% {
+        transform: translate(15px, -15px);
+    }
+
+    70% {
+        transform: translate(-10px, 10px);
+    }
+
+    80% {
+        transform: translate(10px, -10px);
+    }
+
+    90% {
+        transform: translate(-5px, 5px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+.vibrate {
+    animation: smoothVibrate 1s ease infinite;
+}
