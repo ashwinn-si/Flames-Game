@@ -10,7 +10,9 @@ const path = require("path")
 
 const bodyParser = require("body-parser")
 
-const mongoURL="mongodb+srv://admin:4YFzXTwaFNWOhxXT@logindetails.owc5i.mongodb.net/Project-FLAMES?retryWrites=true&w=majority&appName=LoginDetails";
+require('dotenv').config();
+
+const mongoURL=process.env.MONGODB_URI;
 
 mongoose.connect(mongoURL).then(()=>{
     console.log("db connected");
