@@ -99,8 +99,18 @@ app.post("/savingDetails", async (req,res)=>{
 });
 
 app.get("/result", (req, res) => {
-    // Extract details from the session
-    const { boyName, girlName, relationship, boyRemoveIndex, girlRemoveIndex } = req.session.details;
+    if (!req.session.details) {
+        // If session details are missing, handle it gracefully
+        return res.status(400).send("Session details are missing. Please submit the form again.");
+    }
+    
+    const { 
+        boyName = "", 
+        girlName = "", 
+        relationship = "", 
+        boyRemoveIndex = null, 
+        girlRemoveIndex = null 
+    } = req.session.details || {};
 
     // Render the result page with session data
     res.render("result", {
