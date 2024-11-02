@@ -12,7 +12,7 @@ const bodyParser = require("body-parser")
 
 require('dotenv').config();
 
-const mongoURL=process.env.MONGODB_URI;
+const mongoURL = process.env.MONGODB_URI;
 
 mongoose.connect(mongoURL).then(()=>{
     console.log("db connected");
