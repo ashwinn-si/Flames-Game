@@ -87,13 +87,13 @@ app.post("/savingDetails", async (req,res)=>{
     const { date, time } = getFormattedDateAndTime(); 
 
     //saving in database
-     const user = new UserDetails({
-            date:date,
-            time:time,
-            boyName: boyName.join(""),
-            girlName: girlName.join(""),
-            relationship
-        });
+    const user = new UserDetails({
+        date: date,
+        time: time,
+        boyName: Array.isArray(boyName) ? boyName.join("") : boyName,
+        girlName: Array.isArray(girlName) ? girlName.join("") : girlName,
+        relationship
+    });
     await user.save()
     .then(res.status(200).json({redirectUrl : "/result"}));
 });
