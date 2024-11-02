@@ -6,6 +6,8 @@ const mongoose = require("mongoose")
 
 const session = require("express-session");
 
+const MongoStore = require("connect-mongo");
+
 const path = require("path")
 
 const bodyParser = require("body-parser")
@@ -14,7 +16,7 @@ require('dotenv').config();
 
 const mongoURL = process.env.MONGODB_URI;
 
-mongoose.connect(mongoURL).then(()=>{
+mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }).then(()=>{
     console.log("db connected");
 }).catch((err)=>{
     console.log("db not connected");
@@ -61,7 +63,12 @@ const getFormattedDateAndTime = () => {
 app.use(session({
     secret: 'sjdasjdsaoidmasoidasiodmas', 
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        collectionName: 'sessions' // Optional, you can specify a custom collection name
+    }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day expiration
 }));
 
 app.use(express.static(path.join(__dirname,"public")))
@@ -103,7 +110,7 @@ app.get("/result", (req, res) => {
         // If session details are missing, handle it gracefully
         return res.status(400).send("Session details are missing. Please submit the form again.");
     }
-    
+
     const { 
         boyName = "", 
         girlName = "", 
