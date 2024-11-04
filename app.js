@@ -10,13 +10,16 @@ const MongoStore = require("connect-mongo");
 
 const path = require("path")
 
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+
 
 require('dotenv').config();
 
 const mongoURL = process.env.MONGODB_URI;
 
-mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }).then(()=>{
+let curr_id ="";
+
+mongoose.connect(mongoURL).then(()=>{
     console.log("db connected");
 }).catch((err)=>{
     console.log("db not connected");
@@ -27,6 +30,8 @@ const userSchema = new mongoose.Schema({
     time : { type: String },
     boyName:{type: String},
     girlName:{type: String},
+    boyRemoveIndex:{type :[String]},
+    girlRemoveIndex:{type:[String]},
     relationship:{type:String },
 })
 
@@ -59,20 +64,6 @@ const getFormattedDateAndTime = () => {
     return { date, time };
   };
 
-
-app.use(session({
-    secret: 'sjdasjdsaoidmasoidasiodmas', 
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
-        collectionName: 'sessions' // Optional, you can specify a custom collection name
-    }),
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day expiration
-}));
-
-app.use(express.static(path.join(__dirname,"public")))
-
 app.get("/",(req,res)=>{
     res.status(200).render("main")
 })
@@ -82,53 +73,33 @@ app.post("/savingDetails", async (req,res)=>{
     let girlName = req.body.girlName
     let boyRemoveIndex = req.body.boyRemoveIndex
     let girlRemoveIndex = req.body.girlRemoveIndex
-    let relationship = req.body.relationship
-
-    req.session.details={
-        boyName,
-        girlName,
-        boyRemoveIndex,
-        girlRemoveIndex,
-        relationship
-    }
+    let relationship = req.body.relationship;
     const { date, time } = getFormattedDateAndTime(); 
 
-    //saving in database
     const user = new UserDetails({
         date: date,
         time: time,
-        boyName: Array.isArray(boyName) ? boyName.join("") : boyName,
-        girlName: Array.isArray(girlName) ? girlName.join("") : girlName,
-        relationship
+        boyName: boyName.join(""),
+        girlName: girlName.join(""),
+        relationship : relationship,
+        boyRemoveIndex : boyRemoveIndex,
+        girlRemoveIndex : girlRemoveIndex
     });
-    await user.save()
+    await user.save().then(
+        curr_id = user._id
+    )
     .then(res.status(200).json({redirectUrl : "/result"}));
 });
 
-app.get("/result", (req, res) => {
-    if (!req.session.details) {
-        // If session details are missing, handle it gracefully
-        return res.status(400).send("Session details are missing. Please submit the form again.");
-    }
-
-    const { 
-        boyName = "", 
-        girlName = "", 
-        relationship = "", 
-        boyRemoveIndex = null, 
-        girlRemoveIndex = null 
-    } = req.session.details || {};
-
-    // Render the result page with session data
-    res.render("result", {
-        boyName,
-        girlName,
-        relationship,
-        boyRemoveIndex,
-        girlRemoveIndex
+app.get("/result",  async (req, res) => {
+    const SavedUserDeatails =  await UserDetails.findById(curr_id);
+    res.render("result",{
+        girlName : SavedUserDeatails.girlName,
+        boyName : SavedUserDeatails.boyName,
+        relationship : SavedUserDeatails.relationship,
+        boyRemoveIndex : SavedUserDeatails.boyRemoveIndex,
+        girlRemoveIndex: SavedUserDeatails.girlRemoveIndex
     });
-
-    req.session.details = null;
 });
 
 
