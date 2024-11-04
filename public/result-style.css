@@ -100,7 +100,6 @@ button{
     box-shadow: 0 4px 12px var(--crimson);
 }
 
-
 button:hover {
     background-color: var(--crimson);
     transform: scale(1.05);
