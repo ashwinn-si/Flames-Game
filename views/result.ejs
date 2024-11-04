@@ -48,7 +48,10 @@
         const root = document.documentElement;
         if(relationship==="love"||relationship==="Affectionate"){
             document.querySelector(".card").innerHTML += `<img src="/assets/happy.jpg" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`; 
-        }else if(relationship==="Friend" || relationship ==="Affectionate"){
+        }else if(relationship==="Marriage"){
+            document.querySelector(".card").innerHTML += `<img src="/assets/marriage.gif" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`; 
+        }
+        else if(relationship==="Friend" || relationship ==="Affectionate"){
             root.style.setProperty('--soft-pink', '#87CEEB');       
             root.style.setProperty('--rose-red', '#FFD700');          
             root.style.setProperty('--mauve', '#98FB98');            
@@ -88,7 +91,8 @@
             root.style.setProperty('--dark-bg', '#1E1E1E');     
             document.querySelector(".card").innerHTML += `<img src="/assets/sad-image.jpg" alt="Sad Image" style="width:100%; margin-top: 20px; border-radius: 10px;">`;
         }
-        document.querySelector(".card").innerHTML+='<p class="credit">Ashwin S I</p>';
+        document.querySelector(".card").innerHTML += '<button onclick="window.location.href=\'/returnHome\'">Home</button>';
+
     </script>
 </body>
 </html>

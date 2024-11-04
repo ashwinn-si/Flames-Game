@@ -46,6 +46,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname,"public")))
 
 const getFormattedDateAndTime = () => {
     const now = new Date();
@@ -93,6 +94,8 @@ app.post("/savingDetails", async (req,res)=>{
 
 app.get("/result",  async (req, res) => {
     const SavedUserDeatails =  await UserDetails.findById(curr_id);
+    
+    console.log(SavedUserDeatails);
     res.render("result",{
         girlName : SavedUserDeatails.girlName,
         boyName : SavedUserDeatails.boyName,
@@ -102,6 +105,11 @@ app.get("/result",  async (req, res) => {
     });
 });
 
+
+app.get('/returnHome', (req, res) => {
+    curr_id="";
+    res.render('main'); 
+});
 
 app.listen(3000,()=>{
     console.log("server started");
