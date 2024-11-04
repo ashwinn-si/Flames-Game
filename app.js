@@ -15,7 +15,7 @@ const bodyParser = require("body-parser");
 
 require('dotenv').config();
 
-const mongoURL = process.env.MONGODB_URI;
+const mongoURL = "mongodb+srv://root:n0SFsK3VoT2p2Box@detailscluster.hu83z.mongodb.net/UserDetails?retryWrites=true&w=majority&appName=DetailsCluster";
 
 let curr_id ="";
 mongoose.connect(mongoURL).then(()=>{
