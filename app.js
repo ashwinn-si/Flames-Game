@@ -18,7 +18,6 @@ require('dotenv').config();
 const mongoURL = process.env.MONGODB_URI;
 
 let curr_id ="";
-
 mongoose.connect(mongoURL).then(()=>{
     console.log("db connected");
 }).catch((err)=>{
