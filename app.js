@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema({
     boyRemoveIndex:{type :[String]},
     girlRemoveIndex:{type:[String]},
     relationship:{type:String },
+    ip_address:{type:String}
 })
 
 const UserDetails = mongoose.model('UserInfo',userSchema);
@@ -64,6 +65,16 @@ const getFormattedDateAndTime = () => {
     return { date, time };
   };
 
+function ip_address_finder(req) {
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    if (ip.includes(',')) {
+        // If there are multiple IPs, take the first one
+        ip = ip.split(',')[0];
+    }
+    return ip;
+}
+
+
 app.get("/",(req,res)=>{
     res.status(200).render("main")
 })
@@ -83,7 +94,8 @@ app.post("/savingDetails", async (req,res)=>{
         girlName: girlName.join(""),
         relationship : relationship,
         boyRemoveIndex : boyRemoveIndex,
-        girlRemoveIndex : girlRemoveIndex
+        girlRemoveIndex : girlRemoveIndex,
+        ip_address : ip_address_finder(req),
     });
     await user.save().then(
         curr_id = user._id
